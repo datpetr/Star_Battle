@@ -2,9 +2,9 @@ import pygame
 import os
 import random
 
-
 sizes = 1536, 864
 screen = pygame.display.set_mode(sizes)
+clock = pygame.time.Clock()
 
 
 def load_image(name, colorkey=None, color_key=None):
@@ -34,32 +34,74 @@ class start_screen(pygame.sprite.Sprite):
         self.rect.x = args1[0]
 
 
-all_sprites = pygame.sprite.Group()
+class Buttons(pygame.sprite.Sprite):
+    back_ground = load_image('back_ground.png')
+
+    def __init__(self, *groups):
+        super().__init__(*groups)
+        self.image = start_screen.image
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randrange(300)
+        self.rect.y = random.randrange(300)
+
+    def update_back_ground(self, args1):
+        self.rect.y = args1[1]
+        self.rect.x = args1[0]
+
+
+all_sprites_start_screen = pygame.sprite.Group()
+all_sprites_back_ground = pygame.sprite.Group()
 
 for _ in range(1):
-    start_screen(all_sprites)
+    start_screen(all_sprites_start_screen)
+
+for _ in range(1):
+    Buttons(all_sprites_back_ground)
 x_speed = - 1536
 y_speed = 0
 running = True
 v = 700
 FPS = 150
 count = 0
+flag_button = False
+
 while running:
-    all_sprites.update([x_speed, y_speed])
+    all_sprites_start_screen.update([x_speed, y_speed])
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button == 1:
+                Buttons.update_back_ground()
+                x_speed = - 1536
+                y_speed = 0
+                count = 0
+
+                if count < 1535:
+                    x_speed += v / FPS
+                    y_speed += 0
+                    all_sprites_back_ground.update_back_ground([x_speed, y_speed])
+                    count += v / FPS
+                else:
+                    v = 0
+                    x_speed += v / FPS
+                    y_speed += 0
+                    all_sprites_back_ground.update_back_ground([x_speed, y_speed])
+                    flag_button = True
     if count < 1535:
         x_speed += v / FPS
         y_speed += 0
-        all_sprites.update([x_speed, y_speed])
+        all_sprites_start_screen.update([x_speed, y_speed])
         count += v / FPS
     else:
         v = 0
         x_speed += v / FPS
         y_speed += 0
-        all_sprites.update([x_speed, y_speed])
-    screen.fill(pygame.Color('white'))
-    all_sprites.draw(screen)
-    all_sprites.update([x_speed, y_speed])
+        all_sprites_start_screen.update([x_speed, y_speed])
+        flag_button = True
+
+    screen.fill(pygame.Color('black'))
+    all_sprites_start_screen.draw(screen)
+    all_sprites_start_screen.update([x_speed, y_speed])
+    clock.tick(FPS)
     pygame.display.flip()

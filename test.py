@@ -73,7 +73,6 @@ class Button(pygame.sprite.Sprite):
             if event.type == pygame.MOUSEBUTTONDOWN and hit:
                 self.callback(self)
 
-
 run = True
 
 # we store all Sprites in a Group, so we can easily

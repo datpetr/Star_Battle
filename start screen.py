@@ -29,12 +29,12 @@ class start_screen(pygame.sprite.Sprite):
         self.rect.x = random.randrange(300)
         self.rect.y = random.randrange(300)
 
-    def update(self, args1):
-        self.rect.y = args1[1]
-        self.rect.x = args1[0]
+    def update(self, args):
+        self.rect.y = args[1]
+        self.rect.x = args[0]
 
 
-class Buttons(pygame.sprite.Sprite):
+class Button(pygame.sprite.Sprite):
     back_ground = load_image('back_ground.png')
 
     def __init__(self, *groups):
@@ -51,12 +51,14 @@ class Buttons(pygame.sprite.Sprite):
 
 all_sprites_start_screen = pygame.sprite.Group()
 all_sprites_back_ground = pygame.sprite.Group()
+sprites = pygame.sprite.Group()
 
 for _ in range(1):
     start_screen(all_sprites_start_screen)
 
 for _ in range(1):
-    Buttons(all_sprites_back_ground)
+    Button(all_sprites_back_ground)
+
 x_speed = - 1536
 y_speed = 0
 running = True
@@ -72,7 +74,7 @@ while running:
             running = False
         if event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                Buttons.update_back_ground()
+                Button.update_back_ground()
                 x_speed = - 1536
                 y_speed = 0
                 count = 0
@@ -99,7 +101,12 @@ while running:
         y_speed += 0
         all_sprites_start_screen.update([x_speed, y_speed])
         flag_button = True
-
+    if flag_button:
+        sprites.add(Button(pygame.Color('dodgerblue'),
+                            pygame.Color('lightgreen'),
+                            pygame.Rect(300, 200, 90, 100),
+                            lambda b: print(f"Click me again!"),
+                            'Another'))
     screen.fill(pygame.Color('black'))
     all_sprites_start_screen.draw(screen)
     all_sprites_start_screen.update([x_speed, y_speed])

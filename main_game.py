@@ -1,5 +1,3 @@
-# Игра Shmup - 4 часть
-# Графика
 import pygame
 import random
 from os import path
@@ -23,6 +21,8 @@ img_dir = path.join(path.dirname(__file__), 'data')
 size = WIDTH, HEIGHT = [1536, 864]
 screen = pygame.display.set_mode(size)
 FPS = 60
+x_pos = 1450
+y_pos = 50
 
 # Задаем цвета
 WHITE = (255, 255, 255)
@@ -32,6 +32,8 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 colors = [(255, 255, 255), (0, 0, 255), (30, 144, 255), (255, 69, 0), (255, 255, 0)]
+count_of_life = 3
+count_of_bullet = 0
 # Создаем игру и окно
 pygame.init()
 pygame.mixer.init()
@@ -106,7 +108,8 @@ class Bullet(pygame.sprite.Sprite):
 
 
 # Загрузка всей игровой графики
-player_img = load_image("falcon.png")
+player__img = load_image("falcon.png")
+player_img = pygame.transform.scale(player__img, (4000, 4000))
 meteor_img = load_image("meteor.png")
 bullet_img = load_image("laser.png")
 
@@ -124,11 +127,10 @@ for i in range(15):
 
 # Добавляем 1000 звезд со случайными координатами
 for i in range(1000):
-    x = random.randrange(0, 1536)
-    y = random.randrange(0, 1536)
+    x = random.randrange(0, WIDTH)
+    y = random.randrange(0, WIDTH)
     star_list.append([x, y, 2])
 clock = pygame.time.Clock()
-
 
 # Цикл игры
 running = True
@@ -142,7 +144,11 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 player.shoot()
-
+    font = pygame.font.Font(None, 36)
+    text = font.render("Life: {}".format(count_of_life), 1, (0, 180, 0))
+    screen.blit(text, (1350, 100))
+    text2 = font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0))
+    screen.blit(text2, (1350, 150))
     # Обновление
     all_sprites.update()
     for star in star_list:
@@ -154,9 +160,9 @@ while running:
         star[1] += star[2]
 
         # Если звезда упала за низ окна
-        if star[1] > 1536:
+        if star[1] > WIDTH:
             # Устанавливаем для нее новые случайные координаты (конечноже выше экрана)
-            star[0] = random.randrange(0, 1536)
+            star[0] = random.randrange(0, WIDTH)
             star[1] = random.randrange(-50, -10)
 
     hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
@@ -164,12 +170,18 @@ while running:
         m = Mob()
         all_sprites.add(m)
         mobs.add(m)
+        count_of_bullet += 1
+        text2 = font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0))
+        screen.blit(text2, (1350, 150))
 
     # Проверка, не ударил ли метеор игрока
     hits = pygame.sprite.spritecollide(player, mobs, False)
     if hits:
-        running = False
-
+        count_of_life -= 1
+        text = font.render("Life: {}".format(count_of_life), 1, (0, 180, 0))
+        screen.blit(text, (1350, 100))
+        if count_of_life <= 0:
+            pass
     # Выводим на экран все что нарисовали
     all_sprites.draw(screen)
     # После отрисовки всего, переворачиваем экран

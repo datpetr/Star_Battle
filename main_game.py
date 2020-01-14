@@ -146,9 +146,9 @@ while running:
                 player.shoot()
     font = pygame.font.Font(None, 36)
     text = font.render("Life: {}".format(count_of_life), 1, (0, 180, 0))
-    screen.blit(text, (1350, 100))
+    screen.blit(text, (1400, 50))
     text2 = font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0))
-    screen.blit(text2, (1350, 150))
+    screen.blit(text2, (1400, 100))
     # Обновление
     all_sprites.update()
     for star in star_list:
@@ -172,14 +172,14 @@ while running:
         mobs.add(m)
         count_of_bullet += 1
         text2 = font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0))
-        screen.blit(text2, (1350, 150))
+        screen.blit(text2, (1400, 100))
 
     # Проверка, не ударил ли метеор игрока
     hits = pygame.sprite.spritecollide(player, mobs, False)
     if hits:
         count_of_life -= 1
         text = font.render("Life: {}".format(count_of_life), 1, (0, 180, 0))
-        screen.blit(text, (1350, 100))
+        screen.blit(text, (1400, 50))
         if count_of_life <= 0:
             pass
     # Выводим на экран все что нарисовали

@@ -17,7 +17,6 @@ def load_image(name, colorkey=None):
 
 
 img_dir = path.join(path.dirname(__file__), 'data')
-
 size = WIDTH, HEIGHT = [1536, 864]
 screen = pygame.display.set_mode(size)
 FPS = 60
@@ -39,6 +38,7 @@ pygame.init()
 pygame.mixer.init()
 pygame.display.set_caption("STAR BATTLE")
 clock = pygame.time.Clock()
+snd_dir = path.join(path.dirname(__file__), 'data')
 
 
 class Player(pygame.sprite.Sprite):
@@ -73,15 +73,36 @@ class Player(pygame.sprite.Sprite):
 class Mob(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        self.image = meteor_img
-        self.image.set_colorkey(BLACK)
+        meteor_list = ['meteor.png', 'meteor2.png', 'meteor3.png',
+                       'meteor4.png']
+        n = random.randint(0, 3)
+        self.image_orig = load_image(meteor_list[n])
+        self.image_orig.set_colorkey(BLACK)
+        self.image = self.image_orig.copy()
         self.rect = self.image.get_rect()
+        self.radius = int(self.rect.width * .85 / 2)
+        # pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
         self.rect.x = random.randrange(WIDTH - self.rect.width)
-        self.rect.y = random.randrange(-100, -40)
+        self.rect.y = random.randrange(-150, -100)
         self.speedy = random.randrange(1, 8)
         self.speedx = random.randrange(-3, 3)
+        self.rot = 0
+        self.rot_speed = random.randrange(-8, 8)
+        self.last_update = pygame.time.get_ticks()
+
+    def rotate(self):
+        now = pygame.time.get_ticks()
+        if now - self.last_update > 50:
+            self.last_update = now
+            self.rot = (self.rot + self.rot_speed) % 360
+            new_image = pygame.transform.rotate(self.image_orig, self.rot)
+            old_center = self.rect.center
+            self.image = new_image
+            self.rect = self.image.get_rect()
+            self.rect.center = old_center
 
     def update(self):
+        self.rotate()
         self.rect.x += self.speedx
         self.rect.y += self.speedy
         if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
@@ -108,10 +129,14 @@ class Bullet(pygame.sprite.Sprite):
 
 
 # Загрузка всей игровой графики
-player__img = load_image("falcon.png")
-player_img = pygame.transform.scale(player__img, (4000, 4000))
+player_img = load_image("falcon.png")
 meteor_img = load_image("meteor.png")
 bullet_img = load_image("laser.png")
+hit_sound = pygame.mixer.Sound(path.join(snd_dir, 'hit.wav'))
+break_sound = pygame.mixer.Sound(path.join(snd_dir, 'break.wav'))
+fly_sound = pygame.mixer.Sound(path.join(snd_dir, 'fly.wav'))
+Order66 = pygame.mixer.Sound(path.join(snd_dir, 'Order-66.wav'))
+
 
 all_sprites = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
@@ -132,6 +157,7 @@ for i in range(1000):
     star_list.append([x, y, 2])
 clock = pygame.time.Clock()
 
+
 # Цикл игры
 running = True
 while running:
@@ -143,6 +169,7 @@ while running:
             running = False
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
+                hit_sound.play()
                 player.shoot()
     font = pygame.font.Font(None, 36)
     text = font.render("Life: {}".format(count_of_life), 1, (0, 180, 0))
@@ -170,6 +197,7 @@ while running:
         m = Mob()
         all_sprites.add(m)
         mobs.add(m)
+        break_sound.play()
         count_of_bullet += 1
         text2 = font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0))
         screen.blit(text2, (1400, 100))

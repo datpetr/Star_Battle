@@ -16,8 +16,8 @@ def load_image(name, colorkey=None):
     return image
 
 
-img_dir = path.join(path.dirname(__file__), 'data')
-size = WIDTH, HEIGHT = [1536, 500]
+img_dir = path.join(path.dirname(__file__), 'sounds')
+size = WIDTH, HEIGHT = [1536, 864]
 screen = pygame.display.set_mode(size)
 FPS = 60
 x_pos = 1450
@@ -34,7 +34,7 @@ pygame.init()
 pygame.mixer.init()
 pygame.display.set_caption("STAR BATTLE")
 clock = pygame.time.Clock()
-snd_dir = path.join(path.dirname(__file__), 'data')
+snd_dir = path.join(path.dirname(__file__), 'sounds')
 
 
 class Player(pygame.sprite.Sprite):
@@ -122,28 +122,30 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-class AnimatedSprite(pygame.sprite.Sprite):
-    def __init__(self, sheet, columns, rows, center):
-        super().__init__(all_sprites)
-        self.frames = []
-        self.cut_sheet(sheet, columns, rows)
-        self.cur_frame = 0
+class Explosion(pygame.sprite.Sprite):
+    def __init__(self, center, size):
+        pygame.sprite.Sprite.__init__(self)
+        self.size = size
+        self.image = explosion_anim[self.size][0]
+        self.rect = self.image.get_rect()
         self.rect.center = center
-        self.image = self.frames[self.cur_frame]
-        self.rect = self.rect.move(self.rect.x, -1 * self.rect.y)
-
-    def cut_sheet(self, sheet, columns, rows):
-        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
-                                sheet.get_height() // rows)
-        for j in range(rows):
-            for i in range(columns):
-                frame_location = (self.rect.w * i, self.rect.h * j)
-                self.frames.append(sheet.subsurface(pygame.Rect(
-                    frame_location, self.rect.size)))
+        self.frame = 0
+        self.last_update = pygame.time.get_ticks()
+        self.frame_rate = 50
 
     def update(self):
-        self.cur_frame = (self.cur_frame + 1) % len(self.frames)
-        self.image = self.frames[self.cur_frame]
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.frame_rate:
+            self.last_update = now
+            self.frame += 1
+            if self.frame == len(explosion_anim[self.size]):
+                self.kill()
+            else:
+                center = self.rect.center
+                self.image = explosion_anim[self.size][self.frame]
+                self.rect = self.image.get_rect()
+                self.rect.center = center
+                screen.blit(font.render('+ {}'.format(count_of_bullet), 1, (0, 0, 0)), self.rect)
 
 
 # Загрузка всей игровой графики
@@ -154,7 +156,18 @@ hit_sound = pygame.mixer.Sound(path.join(snd_dir, 'hit.wav'))
 break_sound = pygame.mixer.Sound(path.join(snd_dir, 'break.wav'))
 fly_sound = pygame.mixer.Sound(path.join(snd_dir, 'fly.wav'))
 Order66 = pygame.mixer.Sound(path.join(snd_dir, 'Order-66.wav'))
+Break_falcon = pygame.mixer.Sound(path.join(snd_dir, 'break_falcon.wav'))
+explosion_anim = {'lg': [], 'sm': []}
 
+for j in range(4):
+    for i in range(8):
+        img = load_image('explosions.png')
+        rect = pygame.Rect(0, 0, img.get_width() // 8,
+                           img.get_height() // 4)
+        explosion_anim['lg'].append(img.subsurface(pygame.Rect(
+            (rect.w * i, rect.h * j), rect.size)))
+        explosion_anim['sm'].append(img.subsurface(pygame.Rect(
+            (rect.w * i, rect.h * j), rect.size)))
 
 all_sprites = pygame.sprite.Group()
 mobs = pygame.sprite.Group()
@@ -175,7 +188,6 @@ for i in range(1000):
     star_list.append([x, y, 2])
 clock = pygame.time.Clock()
 
-
 # Цикл игры
 running = True
 while running:
@@ -192,7 +204,7 @@ while running:
     font = pygame.font.Font(None, 36)
     text = font.render("Life: {}".format(count_of_life), 1, (0, 180, 0))
     screen.blit(text, (1400, 50))
-    text2 = font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0))
+    text2 = font.render("Score: {}".format(count_of_bullet), 1, (0, 180, 0))
     screen.blit(text2, (1400, 100))
     # Обновление
     all_sprites.update()
@@ -216,9 +228,8 @@ while running:
         all_sprites.add(m)
         mobs.add(m)
         break_sound.play()
-        count_of_bullet += 1
-        all_sprites.add(AnimatedSprite(load_image("explosions.png"), 8, 4, hit.rect.center))
-        print(m.rect.x, -1 * m.rect.y)
+        count_of_bullet += hit.radius // 2
+        all_sprites.add(Explosion(hit.rect.center, 'lg'))
         text2 = font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0))
         screen.blit(text2, (WIDTH - 136, 100))
 
@@ -229,6 +240,8 @@ while running:
         text = font.render("Life: {}".format(count_of_life), 1, (0, 180, 0))
         screen.blit(text, (WIDTH - 136, 50))
         player.shield -= hit.radius * 2
+        all_sprites.add(Explosion(hit.rect.center, 'sm'))
+        Break_falcon.play()
         if count_of_life <= 0:
             running = False
     # Выводим на экран все что нарисовали

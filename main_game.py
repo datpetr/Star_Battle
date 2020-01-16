@@ -17,7 +17,7 @@ def load_image(name, colorkey=None):
 
 
 img_dir = path.join(path.dirname(__file__), 'data')
-size = WIDTH, HEIGHT = [1536, 864]
+size = WIDTH, HEIGHT = [1536, 500]
 screen = pygame.display.set_mode(size)
 FPS = 60
 x_pos = 1450
@@ -26,12 +26,8 @@ y_pos = 50
 # Задаем цвета
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)
-GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
-YELLOW = (255, 255, 0)
 colors = [(255, 255, 255), (0, 0, 255), (30, 144, 255), (255, 69, 0), (255, 255, 0)]
-count_of_life = 3
+count_of_life = 100
 count_of_bullet = 0
 # Создаем игру и окно
 pygame.init()
@@ -44,6 +40,7 @@ snd_dir = path.join(path.dirname(__file__), 'data')
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
+        self.shield = 100
         self.image = pygame.transform.scale(player_img, (50, 38))
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
@@ -73,15 +70,13 @@ class Player(pygame.sprite.Sprite):
 class Mob(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        meteor_list = ['meteor.png', 'meteor2.png', 'meteor3.png',
-                       'meteor4.png']
-        n = random.randint(0, 3)
+        meteor_list = ['meteor.png', 'meteor2.png', 'meteor4.png']
+        n = random.randint(0, 2)
         self.image_orig = load_image(meteor_list[n])
         self.image_orig.set_colorkey(BLACK)
         self.image = self.image_orig.copy()
         self.rect = self.image.get_rect()
         self.radius = int(self.rect.width * .85 / 2)
-        # pygame.draw.circle(self.image, RED, self.rect.center, self.radius)
         self.rect.x = random.randrange(WIDTH - self.rect.width)
         self.rect.y = random.randrange(-150, -100)
         self.speedy = random.randrange(1, 8)
@@ -102,7 +97,6 @@ class Mob(pygame.sprite.Sprite):
             self.rect.center = old_center
 
     def update(self):
-        self.rotate()
         self.rect.x += self.speedx
         self.rect.y += self.speedy
         if self.rect.top > HEIGHT + 10 or self.rect.left < -25 or self.rect.right > WIDTH + 20:
@@ -126,6 +120,30 @@ class Bullet(pygame.sprite.Sprite):
         # убить, если он заходит за верхнюю часть экрана
         if self.rect.bottom < 0:
             self.kill()
+
+
+class AnimatedSprite(pygame.sprite.Sprite):
+    def __init__(self, sheet, columns, rows, center):
+        super().__init__(all_sprites)
+        self.frames = []
+        self.cut_sheet(sheet, columns, rows)
+        self.cur_frame = 0
+        self.rect.center = center
+        self.image = self.frames[self.cur_frame]
+        self.rect = self.rect.move(self.rect.x, -1 * self.rect.y)
+
+    def cut_sheet(self, sheet, columns, rows):
+        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
+                                sheet.get_height() // rows)
+        for j in range(rows):
+            for i in range(columns):
+                frame_location = (self.rect.w * i, self.rect.h * j)
+                self.frames.append(sheet.subsurface(pygame.Rect(
+                    frame_location, self.rect.size)))
+
+    def update(self):
+        self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+        self.image = self.frames[self.cur_frame]
 
 
 # Загрузка всей игровой графики
@@ -199,17 +217,20 @@ while running:
         mobs.add(m)
         break_sound.play()
         count_of_bullet += 1
+        all_sprites.add(AnimatedSprite(load_image("explosions.png"), 8, 4, hit.rect.center))
+        print(m.rect.x, -1 * m.rect.y)
         text2 = font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0))
-        screen.blit(text2, (1400, 100))
+        screen.blit(text2, (WIDTH - 136, 100))
 
     # Проверка, не ударил ли метеор игрока
     hits = pygame.sprite.spritecollide(player, mobs, False)
-    if hits:
+    for hit in hits:
         count_of_life -= 1
         text = font.render("Life: {}".format(count_of_life), 1, (0, 180, 0))
-        screen.blit(text, (1400, 50))
+        screen.blit(text, (WIDTH - 136, 50))
+        player.shield -= hit.radius * 2
         if count_of_life <= 0:
-            pass
+            running = False
     # Выводим на экран все что нарисовали
     all_sprites.draw(screen)
     # После отрисовки всего, переворачиваем экран

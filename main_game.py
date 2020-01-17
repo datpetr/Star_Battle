@@ -29,6 +29,7 @@ BLACK = (0, 0, 0)
 colors = [(255, 255, 255), (0, 0, 255), (30, 144, 255), (255, 69, 0), (255, 255, 0)]
 count_of_life = 100
 count_of_bullet = 0
+k_hit = []
 # Создаем игру и окно
 pygame.init()
 pygame.mixer.init()
@@ -71,8 +72,7 @@ class Mob(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         meteor_list = ['meteor.png', 'meteor2.png', 'meteor4.png']
-        n = random.randint(0, 2)
-        self.image_orig = load_image(meteor_list[n])
+        self.image_orig = load_image(meteor_list[random.randint(0, 2)])
         self.image_orig.set_colorkey(BLACK)
         self.image = self.image_orig.copy()
         self.rect = self.image.get_rect()
@@ -145,7 +145,8 @@ class Explosion(pygame.sprite.Sprite):
                 self.image = explosion_anim[self.size][self.frame]
                 self.rect = self.image.get_rect()
                 self.rect.center = center
-                screen.blit(font.render('+ {}'.format(count_of_bullet), 1, (0, 0, 0)), self.rect)
+                screen.blit(font.render('+ {}'.format(count_of_bullet),
+                                        1, (0, 0, 0)), self.rect)
 
 
 # Загрузка всей игровой графики
@@ -202,16 +203,19 @@ while running:
                 hit_sound.play()
                 player.shoot()
     font = pygame.font.Font(None, 36)
-    text = font.render("Life: {}".format(count_of_life), 1, (0, 180, 0))
-    screen.blit(text, (1400, 50))
-    text2 = font.render("Score: {}".format(count_of_bullet), 1, (0, 180, 0))
-    screen.blit(text2, (1400, 100))
+    screen.blit(pygame.font.Font(None, 36)
+                .render("Life: {}".format(count_of_life),
+                        1, (0, 180, 0)), (1400, 50))
+    screen.blit(pygame.font.Font(None, 36)
+                .render("Score: {}".format(count_of_bullet),
+                        1, (0, 180, 0)), (1400, 100))
     # Обновление
     all_sprites.update()
     for star in star_list:
         # Рисуем звезду
-        number = random.randint(0, 4)
-        pygame.draw.circle(screen, colors[number], star[0:2], 2)
+        pygame.draw.circle(screen,
+                           colors[random.randint(0, 4)],
+                           star[0:2], 2)
 
         # Смещаем звезду вниз
         star[1] += star[2]
@@ -223,6 +227,7 @@ while running:
             star[1] = random.randrange(-50, -10)
 
     hits = pygame.sprite.groupcollide(mobs, bullets, True, True)
+
     for hit in hits:
         m = Mob()
         all_sprites.add(m)
@@ -230,15 +235,13 @@ while running:
         break_sound.play()
         count_of_bullet += hit.radius // 2
         all_sprites.add(Explosion(hit.rect.center, 'lg'))
-        text2 = font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0))
-        screen.blit(text2, (WIDTH - 136, 100))
+        screen.blit(font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0)), (WIDTH - 136, 100))
 
     # Проверка, не ударил ли метеор игрока
     hits = pygame.sprite.spritecollide(player, mobs, False)
     for hit in hits:
         count_of_life -= 1
-        text = font.render("Life: {}".format(count_of_life), 1, (0, 180, 0))
-        screen.blit(text, (WIDTH - 136, 50))
+        screen.blit(font.render("Life: {}".format(count_of_life), 1, (0, 180, 0)), (WIDTH - 136, 50))
         player.shield -= hit.radius * 2
         all_sprites.add(Explosion(hit.rect.center, 'sm'))
         Break_falcon.play()

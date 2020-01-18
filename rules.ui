@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>904</width>
-    <height>624</height>
+    <height>755</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -38,7 +38,7 @@
       <x>120</x>
       <y>70</y>
       <width>741</width>
-      <height>501</height>
+      <height>631</height>
      </rect>
     </property>
     <property name="font">
@@ -47,7 +47,7 @@
      </font>
     </property>
     <property name="text">
-     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1) Game control:&lt;/p&gt;&lt;p&gt;- Space control shooting&lt;/p&gt;&lt;p&gt;- Arrow left and arrow right control movement of ship &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;2) Score and health(%) will show in upper right corner&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;3)Last rule have the good mood and This is the way!!!&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;For return to the main menu - push the cross&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1) Game control:&lt;/p&gt;&lt;p&gt;- Space control shooting&lt;/p&gt;&lt;p&gt;- Arrow left and arrow right control movement of ship &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;2) Score and health(%) will show in upper right corner&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;3)To stop the game, press ESC, and to continue, press ENTER&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;4)For return to the main menu - push the cross&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;5)Last rule have the good mood and This is the way!!!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>

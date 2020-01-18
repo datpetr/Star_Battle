@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>500</height>
+    <width>904</width>
+    <height>624</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,10 +35,10 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>160</x>
-      <y>90</y>
+      <x>120</x>
+      <y>70</y>
       <width>741</width>
-      <height>281</height>
+      <height>501</height>
      </rect>
     </property>
     <property name="font">
@@ -47,7 +47,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Only one rule is to have a good mood and this is the way!</string>
+     <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;1) Game control:&lt;/p&gt;&lt;p&gt;- Space control shooting&lt;/p&gt;&lt;p&gt;- Arrow left and arrow right control movement of ship &lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;2) Score and health(%) will show in upper right corner&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;3)Last rule have the good mood and This is the way!!!&lt;/p&gt;&lt;p&gt;&lt;br/&gt;&lt;/p&gt;&lt;p&gt;For return to the main menu - push the cross&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
     </property>
    </widget>
   </widget>
@@ -56,7 +56,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
+     <width>904</width>
      <height>21</height>
     </rect>
    </property>

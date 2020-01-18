@@ -7,54 +7,18 @@
     <x>0</x>
     <y>0</y>
     <width>439</width>
-    <height>410</height>
+    <height>424</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="lvl1">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>10</y>
-      <width>381</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>25</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>SIMPLE</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="lvl2">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>130</y>
-      <width>381</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>25</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>NORMAL</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="lvl3">
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>250</y>
+      <y>20</y>
       <width>381</width>
       <height>111</height>
      </rect>
@@ -65,7 +29,43 @@
      </font>
     </property>
     <property name="text">
-     <string>HARD</string>
+     <string>CONTINUE</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="lvl3_2">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>140</y>
+      <width>381</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>25</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>BACK TO MENU</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>40</x>
+      <y>280</y>
+      <width>361</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>YOUR SCORE:</string>
     </property>
    </widget>
   </widget>

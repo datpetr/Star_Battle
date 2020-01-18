@@ -1,10 +1,6 @@
 import sys
-import csv
-import xlsxwriter
 from PyQt5 import uic
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QCheckBox, QApplication, QMainWindow
-from PyQt5.QtWidgets import QPushButton, QLineEdit, QLabel, QFileDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow
 
 
 class Menu(QMainWindow):
@@ -14,14 +10,23 @@ class Menu(QMainWindow):
         # подгружаем файл из designer
 
         # подключаем кнопки
-        self.play.clicked.connect(self.chose_lvl)
-        self.rules.clicked.connect(self.show_rules)
+        self.play.clicked.connect(self.Show_lvl)
+        self.rules.clicked.connect(self.Show_rules)
 
-        def show_rules(self):
-            uic.loadUi('rules.ui', self)
+    def Show_lvl(self):
+        self.lvl = LEVEL()
+        self.lvl.show()
 
-        def play(self):
-            self.LEVEL(self, '').show()
+    def Show_rules(self):
+        self.rules = Rules()
+        self.rules.show()
+
+
+class Rules(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.menu = Menu()
+        uic.loadUi('rules.ui', self)
 
 
 class LEVEL(QMainWindow):
@@ -31,15 +36,22 @@ class LEVEL(QMainWindow):
         # подгружаем файл из designer
 
         # подключаем кнопки
-        self.lvl1.clicked.connect(self.chose_lvl1)
-        self.lvl2.clicked.connect(self.chose_lvl1)
-        self.lvl3.clicked.connect(self.chose_lvl1)
+        self.lvl1.clicked.connect(self.Show_lvl1)
+        self.lvl2.clicked.connect(self.Show_lvl2)
+        self.lvl3.clicked.connect(self.Show_lvl3)
 
-    def chose_lvl1(self):
-        pass
+    def Show_lvl1(self):
+        import main_game
 
-    def chose_lvl2(self):
-        pass
+    def Show_lvl2(self):
+        import main_game
 
-    def chose_lvl3(self):
-        pass
+    def Show_lvl3(self):
+        import main_game
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = Menu()
+    ex.show()
+    sys.exit(app.exec_())

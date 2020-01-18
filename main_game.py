@@ -11,12 +11,12 @@ def load_image(name, colorkey=None):
             colorkey = image.get_at((0, 0))
         image.set_colorkey(colorkey)
     else:
-        # Оставляем картинку прозрачной
         image = pygame.image.load(fullname).convert_alpha()
     return image
 
 
 img_dir = path.join(path.dirname(__file__), 'sounds')
+
 size = WIDTH, HEIGHT = [1536, 864]
 screen = pygame.display.set_mode(size)
 FPS = 60
@@ -149,10 +149,24 @@ class Explosion(pygame.sprite.Sprite):
                                         1, (0, 0, 0)), self.rect)
 
 
+def paused():
+    pausing = True
+    while pausing:
+        for event in pygame.event.get():
+            # проверка для закрытия окна
+            if event.type == pygame.QUIT:
+                pausing = False
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    pausing = False
+
+
 # Загрузка всей игровой графики
 player_img = load_image("falcon.png")
 meteor_img = load_image("meteor.png")
 bullet_img = load_image("laser.png")
+pygame.mixer.pre_init(44100, -16, 2, 2048)
+# Загрузка всех звуков
 hit_sound = pygame.mixer.Sound(path.join(snd_dir, 'hit.wav'))
 break_sound = pygame.mixer.Sound(path.join(snd_dir, 'break.wav'))
 fly_sound = pygame.mixer.Sound(path.join(snd_dir, 'fly.wav'))
@@ -202,13 +216,16 @@ while running:
             if event.key == pygame.K_SPACE:
                 hit_sound.play()
                 player.shoot()
+            if event.key == pygame.K_ESCAPE:
+                paused()
+
     font = pygame.font.Font(None, 36)
     screen.blit(pygame.font.Font(None, 36)
-                .render("Life: {}".format(count_of_life),
-                        1, (0, 180, 0)), (1400, 50))
+                .render("Health: {}%".format(count_of_life),
+                        1, (0, 180, 0)), (WIDTH - 200, 50))
     screen.blit(pygame.font.Font(None, 36)
                 .render("Score: {}".format(count_of_bullet),
-                        1, (0, 180, 0)), (1400, 100))
+                        1, (0, 180, 0)), (WIDTH - 200, 100))
     # Обновление
     all_sprites.update()
     for star in star_list:
@@ -235,13 +252,13 @@ while running:
         break_sound.play()
         count_of_bullet += hit.radius // 2
         all_sprites.add(Explosion(hit.rect.center, 'lg'))
-        screen.blit(font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0)), (WIDTH - 136, 100))
+        screen.blit(font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0)), (WIDTH - 200, 100))
 
     # Проверка, не ударил ли метеор игрока
     hits = pygame.sprite.spritecollide(player, mobs, False)
     for hit in hits:
         count_of_life -= 1
-        screen.blit(font.render("Life: {}".format(count_of_life), 1, (0, 180, 0)), (WIDTH - 136, 50))
+        screen.blit(font.render("Health: {}%".format(count_of_life), 1, (0, 180, 0)), (WIDTH - 200, 50))
         player.shield -= hit.radius * 2
         all_sprites.add(Explosion(hit.rect.center, 'sm'))
         Break_falcon.play()

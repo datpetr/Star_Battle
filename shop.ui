@@ -6,123 +6,102 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>407</height>
+    <width>269</width>
+    <height>269</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QPushButton" name="play">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>100</y>
-      <width>381</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>25</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Play</string>
-    </property>
-   </widget>
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>390</x>
-      <y>0</y>
-      <width>201</width>
-      <height>91</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>22</pointsize>
-      <weight>75</weight>
-      <italic>false</italic>
-      <bold>true</bold>
-      <underline>true</underline>
-      <strikeout>false</strikeout>
-      <kerning>true</kerning>
-     </font>
-    </property>
-    <property name="text">
-     <string>STAR BATTLE</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="rules">
-    <property name="geometry">
-     <rect>
-      <x>80</x>
-      <y>220</y>
-      <width>381</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>25</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Rules</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="shop">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>100</y>
-      <width>381</width>
-      <height>111</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>25</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Shop</string>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_2">
-    <property name="geometry">
-     <rect>
-      <x>530</x>
-      <y>220</y>
-      <width>201</width>
-      <height>121</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>20</pointsize>
-     </font>
-    </property>
-    <property name="text">
-     <string>Your best score: </string>
-    </property>
-   </widget>
-   <widget class="QTextBrowser" name="print_text">
-    <property name="geometry">
-     <rect>
-      <x>730</x>
-      <y>260</y>
+      <x>100</x>
+      <y>-10</y>
       <width>181</width>
-      <height>51</height>
+      <height>81</height>
      </rect>
     </property>
     <property name="font">
      <font>
       <pointsize>20</pointsize>
      </font>
+    </property>
+    <property name="text">
+     <string>Ships:</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="Falcon">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>60</y>
+      <width>121</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Falcon</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="Ship_Skywalker">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>100</y>
+      <width>231</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Ship of Luke Skywalker</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="Ship_Mall">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>140</y>
+      <width>231</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Ship of Dard Mall</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="Ship_Empire">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>180</y>
+      <width>231</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>15</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>Ship of Empire</string>
     </property>
    </widget>
   </widget>
@@ -131,7 +110,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1000</width>
+     <width>269</width>
      <height>21</height>
     </rect>
    </property>

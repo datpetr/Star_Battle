@@ -1,6 +1,12 @@
 import sys
+
+import self as self
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow
+
+best_score = []
+coins = 0
+fullaname = ''
 
 
 class Menu(QMainWindow):
@@ -12,6 +18,7 @@ class Menu(QMainWindow):
         # подключаем кнопки
         self.play.clicked.connect(self.Show_lvl)
         self.rules.clicked.connect(self.Show_rules)
+        self.shop.clicked.connect(self.Shop)
 
     def Show_lvl(self):
         self.lvl = LEVEL()
@@ -20,6 +27,44 @@ class Menu(QMainWindow):
     def Show_rules(self):
         self.rules = Rules()
         self.rules.show()
+
+    def Shop(self):
+        self.costume = Costume()
+        self.costume.show()
+
+    def _print_(self):
+        self.print_text.appendPlainText(max(best_score))
+
+
+class Costume(QMainWindow):
+    global fullaname
+
+    def __init__(self):
+        super().__init__()
+        uic.loadUi('shop.ui', self)
+        # подгружаем файл из designer
+
+        # подключаем кнопки
+        self.Falcon.toggled.connect(self.Falcon)
+        self.Ship_Skywalker.toggled.connect(self.Skywalker)
+        self.Ship_Mall.toggled.connect(self.Mall)
+        self.Ship_Empire.toggled.connect(self.Empire)
+
+        def Falcon(self):
+            if self.sender().isChecked():
+                fullaname = 'falcon.png'
+
+        def Skywalker(self):
+            if self.sender().isChecked():
+                fullaname = 'ship_of_skywalker.png'
+
+        def Mall(self):
+            if self.sender().isChecked():
+                fullaname = 'Ship_of_dard_mall.png'
+
+        def Empire(self):
+            if self.sender().isChecked():
+                fullaname = 'ship_siths.png'
 
 
 class Rules(QMainWindow):
@@ -30,6 +75,9 @@ class Rules(QMainWindow):
 
 
 class LEVEL(QMainWindow):
+    global best_score
+    global fullaname
+
     def __init__(self):
         super().__init__()
         # подгружаем файл из designer
@@ -183,8 +231,6 @@ class LEVEL(QMainWindow):
                             self.image = explosion_anim[self.size][self.frame]
                             self.rect = self.image.get_rect()
                             self.rect.center = center
-                            screen.blit(font.render('+ {}'.format(count_of_bullet),
-                                                    1, (0, 0, 0)), self.rect)
 
             def paused():
                 pausing = True
@@ -198,8 +244,7 @@ class LEVEL(QMainWindow):
                                 pausing = False
 
             # Загрузка всей игровой графики
-            player_img = load_image("falcon.png")
-            meteor_img = load_image("meteor.png")
+            player_img = load_image(fullaname)
             bullet_img = load_image("laser.png")
             pygame.mixer.pre_init(44100, -16, 2, 2048)
             # Загрузка всех звуков
@@ -288,7 +333,7 @@ class LEVEL(QMainWindow):
                     break_sound.play()
                     count_of_bullet += hit.radius // 2
                     all_sprites.add(Explosion(hit.rect.center, 'lg'))
-                    screen.blit(font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0)), (WIDTH - 200, 100))
+                    screen.blit(font.render("Score: {}".format(count_of_bullet), 1, (0, 180, 0)), (WIDTH - 200, 100))
 
                 # Проверка, не ударил ли метеор игрока
                 hits = pygame.sprite.spritecollide(player, mobs, False)
@@ -299,6 +344,7 @@ class LEVEL(QMainWindow):
                     all_sprites.add(Explosion(hit.rect.center, 'sm'))
                     Break_falcon.play()
                     if count_of_life <= 0:
+                        best_score.append(count_of_bullet)
                         self.flag_playing = False
                         running = False
                 # Выводим на экран все что нарисовали
@@ -555,7 +601,7 @@ class LEVEL(QMainWindow):
                     break_sound.play()
                     count_of_bullet += hit.radius // 2
                     all_sprites.add(Explosion(hit.rect.center, 'lg'))
-                    screen.blit(font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0)), (WIDTH - 200, 100))
+                    screen.blit(font.render("Score: {}".format(count_of_bullet), 1, (0, 180, 0)), (WIDTH - 200, 100))
 
                 # Проверка, не ударил ли метеор игрока
                 hits = pygame.sprite.spritecollide(player, mobs, False)
@@ -566,6 +612,7 @@ class LEVEL(QMainWindow):
                     all_sprites.add(Explosion(hit.rect.center, 'sm'))
                     Break_falcon.play()
                     if count_of_life <= 0:
+                        best_score.append(count_of_bullet)
                         self.flag_playing = False
                         running = False
                 # Выводим на экран все что нарисовали
@@ -822,7 +869,7 @@ class LEVEL(QMainWindow):
                     break_sound.play()
                     count_of_bullet += hit.radius // 2
                     all_sprites.add(Explosion(hit.rect.center, 'lg'))
-                    screen.blit(font.render("Hits: {}".format(count_of_bullet), 1, (0, 180, 0)), (WIDTH - 200, 100))
+                    screen.blit(font.render("Score: {}".format(count_of_bullet), 1, (0, 180, 0)), (WIDTH - 200, 100))
 
                 # Проверка, не ударил ли метеор игрока
                 hits = pygame.sprite.spritecollide(player, mobs, False)

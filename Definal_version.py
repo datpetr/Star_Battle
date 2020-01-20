@@ -1,7 +1,5 @@
 import sys
-import time
 
-import self as self
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPlainTextEdit
 
@@ -71,9 +69,7 @@ class LEVEL(QMainWindow):
                     image = pygame.image.load(fullname).convert_alpha()
                 return image
 
-            img_dir = path.join(path.dirname(__file__), 'sounds')
-
-            size = WIDTH, HEIGHT = [1536, 864]
+            size = WIDTH, HEIGHT = [1536, 750]
             screen = pygame.display.set_mode(size)
             FPS = 60
             x_pos = 1450
@@ -365,7 +361,6 @@ class LEVEL(QMainWindow):
             pygame.quit()
 
     def Show_lvl2(self):
-        self.flag_playing = True
         if self.flag_playing:
             import pygame
             import random
@@ -384,7 +379,7 @@ class LEVEL(QMainWindow):
 
             img_dir = path.join(path.dirname(__file__), 'sounds')
 
-            size = WIDTH, HEIGHT = [1536, 864]
+            size = WIDTH, HEIGHT = [1536, 750]
             screen = pygame.display.set_mode(size)
             FPS = 60
             x_pos = 1450
@@ -656,7 +651,7 @@ class LEVEL(QMainWindow):
 
             img_dir = path.join(path.dirname(__file__), 'sounds')
 
-            size = WIDTH, HEIGHT = [1536, 864]
+            size = WIDTH, HEIGHT = [1536, 750]
             screen = pygame.display.set_mode(size)
             FPS = 60
             x_pos = 1450

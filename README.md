@@ -30,3 +30,5 @@ In **Star Battle**, players pilot a spaceship through space, earning points by d
 # Example code for projectile movement
 bullet.rect.x += bullet_speed
 bullet.rect.y -= bullet_speed
+
+## Additional Features

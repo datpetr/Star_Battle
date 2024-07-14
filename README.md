@@ -1,34 +1,32 @@
 # Project Name: STAR BATTLE
 
 ## Author
-Datsenko Pyotr Artemovich
+Datsenko Petr
 
 ## Concept
-Players control a spaceship in space and earn points by destroying meteors.
+In **Star Battle**, players pilot a spaceship through space, earning points by destroying meteors.
 
 ## Implementation Details
 
 ### Libraries Utilized
-- PyQt5
-- random
-- os
-- Pygame
+- **PyQt5:** For GUI components and event handling.
+- **random:** For generating random meteor positions and movements.
+- **os:** For handling file paths and resources.
+- **Pygame:** For game development, including sprite management, collision detection, and rendering.
 
 ### Key Techniques
-- **Sprite Collisions:** Managed using `groupcollide` and `spritecollide`.
-- **Meteor Replacement:** Meteors that move off-screen or are destroyed are removed and replaced by new meteors.
+- **Sprite Collisions:** Utilized `groupcollide` and `spritecollide` methods from Pygame to manage interactions between sprites, such as bullets hitting meteors.
+- **Meteor Replacement:** When meteors move off-screen or are destroyed, they are removed and replaced by new meteors, ensuring continuous gameplay.
 
 ## Technical Description
 
 ### Projectile Movement
-The `Bullet` class handles projectile movement by updating `rect.x` and `rect.y` coordinates. Similar methods are applied for meteors (`Meteor` class) and the spaceship (`Ship` class).
+- **Bullet Class:** Handles the movement of projectiles by updating their `rect.x` and `rect.y` coordinates based on the bullet's speed.
+- **Meteor Class:** Similar to the Bullet class, the Meteor class updates its position to simulate falling meteors.
+- **Ship Class:** Manages the movement of the spaceship, allowing it to navigate through space and avoid collisions.
 
-### Starry Sky Formation
-Star coordinates are generated and updated within the main loop to simulate star movement.
-
-### Explosion Animation
-The `Animation` class handles explosion animations by:
-1. Loading an image.
-2. Slicing the image into pieces.
-3. Animating the sequence.
-
+#### Example Code Snippet for Projectile Movement:
+```python
+# Example code for projectile movement
+bullet.rect.x += bullet_speed
+bullet.rect.y -= bullet_speed

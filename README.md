@@ -1,5 +1,7 @@
 # Project Name: STAR BATTLE
 
+![image](https://github.com/user-attachments/assets/1be1c81c-03ab-4da4-b65e-4fa704121aeb)
+
 ## Author
 Datsenko Petr
 
@@ -70,7 +72,3 @@ class Animation:
         # Cycle through frames for animation
         self.current_frame = (self.current_frame + 1) % len(self.frames)
 ```
-
-![image](https://github.com/user-attachments/assets/06c09892-9d27-4f10-b66a-a0a0f051d4f4)
-![image](https://github.com/user-attachments/assets/1be1c81c-03ab-4da4-b65e-4fa704121aeb)
-
